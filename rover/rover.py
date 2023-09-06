@@ -97,6 +97,43 @@ class Rover():
         for command in commands:
             self.commands.append(self.get_command(command))
     
+    def execute_commands(self):
+        for command in self.commands:
+            match command:
+                case Commands.Forward:
+                    self.move_rover_forward()
+                case Commands.Backward:
+                    self.move_rover_backward() 
+                case Commands.Left:
+                    self.turn_rover_left()  
+                case Commands.Right:
+                    self.turn_rover_right()  
+
+    def move_rover_forward(self):
+        match self.direction:
+            case CompassDirection.North:
+                    self.row -= 1
+            case CompassDirection.South:
+                    self.row += 1
+            case CompassDirection.East:
+                    self.column += 1
+            case CompassDirection.West:
+                    self.column -= 1
+
+    def change_direction(self, change: int):
+        current = self.direction.value
+        current += change
+        if(current <= 0):
+            current = 4
+        if(current > 4):
+            current = 1
+        self.direction = CompassDirection(current)
+
+    def turn_rover_left(self):
+        self.change_direction(-1)
+
+    def turn_rover_right(self):
+        self.change_direction(1)
 
 class CellFactory():
     def createCell(self, symbol, row: int, column: int) -> Cell:
