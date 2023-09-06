@@ -52,8 +52,12 @@ class Grid():
         return self.GetCellsByType(Alien)
     
     def get_cell(self, row, column) -> Cell:
-        result = filter(lambda x: x.row == row and x.column == column, self.cells)
-        return list(result)[0]
+        result = list(filter(lambda x: x.row == row and x.column == column, self.cells))
+        if(len(result) > 0):
+            return result[0]
+        else:
+            return None
+
 
 class CompassDirection(Enum):
     North = 1
@@ -61,16 +65,38 @@ class CompassDirection(Enum):
     South = 3
     West = 4
 
+class Commands(Enum):
+    Forward = 1
+    Backward = 2
+    Left = 3
+    Right = 4
+
 class Rover():
     def __init__(self, grid:Grid, row: int, column: int, direction:CompassDirection):
         self.grid = grid
         self.direction = direction
         self.row = row
         self.column = column
-
-        currentCell = self.grid.get_cell(row, column)
-        if(currentCell == None):
+        self.commands = []
+        
+        if(row > self.grid.height or column > self.grid.width):
             raise Exception("Rover start position invalid.") 
+    
+    def get_command(self, command: str):
+        match command:
+            case "F":
+                return Commands.Forward
+            case "B":
+                return Commands.Backward
+            case "L":
+                return Commands.Left
+            case "R":
+                return Commands.Right
+    
+    def load_commands(self, commands: str):
+        for command in commands:
+            self.commands.append(self.get_command(command))
+    
 
 class CellFactory():
     def createCell(self, symbol, row: int, column: int) -> Cell:

@@ -13,3 +13,12 @@ class RoverTest(unittest.TestCase):
         except:
             pass
     
+    def test_command_parsing(self):
+        inputFile = rover.readFile()
+        grid = rover.parseBoard(inputFile)    
+        r = rover.Rover(grid,1,1, rover.CompassDirection.South)
+        commands = "FFFLFF"
+        r.load_commands(commands)
+        commandBuffer = r.commands
+        self.assertEquals(len(commandBuffer), 6)
+        self.assertEquals(commandBuffer[5], rover.Commands.Forward)
