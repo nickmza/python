@@ -15,6 +15,22 @@ def readFile():
         board = [list(line.strip()) for line in file]
     return board
 
+class Cell():
+    def __init__(self, row: int, column: int):
+        self.row = row
+        self.column = column
+
+class Obstacle(Cell):
+    def __init__(self, row: int, column: int):
+        Cell.__init__ (self, row, column)
+
+class Resource(Cell):
+    def __init__(self, row: int, column: int):
+        Cell.__init__ (self, row, column)
+
+class Alien(Cell):
+    def __init__(self, row: int, column: int):
+        Cell.__init__ (self, row, column)
 
 class Grid():
     def __init__(self, width: int, height: int):
@@ -31,19 +47,13 @@ class Grid():
 
     def GetResources(self)->list:
         return self.GetCellsByType(Resource)
-
-class Cell():
-    def __init__(self, row: int, column: int):
-        self.row = row
-        self.column = column
-
-class Obstacle(Cell):
-    def __init__(self, row: int, column: int):
-        Cell.__init__ (self, row, column)
-
-class Resource(Cell):
-    def __init__(self, row: int, column: int):
-        Cell.__init__ (self, row, column)
+    
+    def GetAliens(self)->list:
+        return self.GetCellsByType(Alien)
+    
+    def get_cell(self, row, column) -> Cell:
+        result = filter(lambda x: x.row == row and x.column == column, self.cells)
+        return list(result)[0]
 
 class CellFactory():
     def createCell(self, symbol, row: int, column: int) -> Cell:
@@ -55,7 +65,7 @@ class CellFactory():
             case "X":
                 return Obstacle(row, column)
             case "?":
-                return None
+                return Alien(row, column)
 
 def parseBoard(input: list) -> Grid:
     grid = Grid(len(input[0]), len(input))
