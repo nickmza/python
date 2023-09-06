@@ -55,6 +55,23 @@ class Grid():
         result = filter(lambda x: x.row == row and x.column == column, self.cells)
         return list(result)[0]
 
+class CompassDirection(Enum):
+    North = 1
+    East = 2
+    South = 3
+    West = 4
+
+class Rover():
+    def __init__(self, grid:Grid, row: int, column: int, direction:CompassDirection):
+        self.grid = grid
+        self.direction = direction
+        self.row = row
+        self.column = column
+
+        currentCell = self.grid.get_cell(row, column)
+        if(currentCell == None):
+            raise Exception("Rover start position invalid.") 
+
 class CellFactory():
     def createCell(self, symbol, row: int, column: int) -> Cell:
         match symbol:
