@@ -12,7 +12,11 @@ class TestRover(unittest.TestCase):
         self.assertTrue(grid.width == 20)
         self.assertTrue(grid.height == 10)
 
-
+    def test_obstacles_loaded(self):
+        inputFile = rover.readFile()
+        grid = rover.parseBoard(inputFile)
+        obstacles = grid.GetObstacles()
+        self.assertEquals(len(obstacles),3)
 
 if __name__ == '__main__':
     unittest.main()
