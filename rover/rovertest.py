@@ -18,5 +18,10 @@ class TestRover(unittest.TestCase):
         obstacles = grid.GetObstacles()
         self.assertEquals(len(obstacles),3)
 
+    def test_resources_loaded(self):
+        inputFile = rover.readFile()
+        grid = rover.parseBoard(inputFile)
+        self.assertEquals(len(grid.GetResources()),3)
+
 if __name__ == '__main__':
     unittest.main()

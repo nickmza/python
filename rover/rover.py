@@ -29,6 +29,9 @@ class Grid():
     def GetObstacles(self)->list:
         return self.GetCellsByType(Obstacle)
 
+    def GetResources(self)->list:
+        return self.GetCellsByType(Resource)
+
 class Cell():
     def __init__(self, row: int, column: int):
         self.row = row
@@ -38,13 +41,17 @@ class Obstacle(Cell):
     def __init__(self, row: int, column: int):
         Cell.__init__ (self, row, column)
 
+class Resource(Cell):
+    def __init__(self, row: int, column: int):
+        Cell.__init__ (self, row, column)
+
 class CellFactory():
     def createCell(self, symbol, row: int, column: int) -> Cell:
         match symbol:
             case ".":
                 return None
             case "*":
-                return None
+                return Resource(row, column)
             case "X":
                 return Obstacle(row, column)
             case "?":
